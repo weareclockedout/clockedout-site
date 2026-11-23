@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clocked Out · Life happens off the clock</title>
+<meta name="description" content="The after-hours club for Jeddah's 9-to-5ers. A new thing to try every week, new people every time, and it's normal to come alone.">
+<meta property="og:title" content="Clocked Out · Life happens off the clock">
+<meta property="og:description" content="The after-hours club for Jeddah's 9-to-5ers. Log off. Show up.">
+<meta name="theme-color" content="#16120F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23F1EBDF' stroke='%2316120F' stroke-width='6'/%3E%3Cpath d='M32 14v18l12 8' stroke='%23B4281E' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=Permanent+Marker&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#16120F; --receipt:#F1EBDF; --red:#B4281E; --sticky:#F2C94C; --lcd:#A9BF5B;
+    --line:rgba(22,18,15,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--receipt);color:var(--night);font:400 17px/1.55 "Archivo",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .mono{font-family:"Space Mono",ui-monospace,monospace;letter-spacing:.04em;text-transform:uppercase;font-size:13px}
+  .marker{font-family:"Permanent Marker",cursive}
+  h1,h2,h3{font-family:"Anton",Impact,sans-serif;font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:.01em}
+
+  /* header */
+  header{border-bottom:1.5px solid var(--night)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .wordmark{font-family:"Anton",sans-serif;font-size:26px;text-transform:uppercase;text-decoration:none;display:flex;align-items:center;gap:2px}
+  .clock-o{display:inline-block;width:.78em;height:.78em;border:.12em solid var(--night);border-radius:50%;position:relative;margin:0 .02em;transform:translateY(.02em)}
+  .clock-o::before,.clock-o::after{content:"";position:absolute;left:50%;top:50%;background:var(--red);transform-origin:50% 100%;width:.09em;border-radius:1px}
+  .clock-o::before{height:.26em;transform:translate(-50%,-100%) rotate(0deg)}
+  .clock-o::after{height:.2em;transform:translate(-50%,-100%) rotate(150deg)}
+
+  /* hero */
+  .hero{padding:72px 0 56px;position:relative;overflow:hidden}
+  .hero .grid{display:grid;grid-template-columns:1.35fr 1fr;gap:48px;align-items:center}
+  .eyebrow{display:inline-block;border:1.5px solid var(--night);padding:6px 12px;border-radius:999px;margin-bottom:28px}
+  .hero h1{font-size:clamp(64px,10vw,138px)}
+  .hero h1 .red{color:var(--red)}
+  .hero p.lead{font-size:20px;max-width:30ch;margin-top:26px}
+  .note{display:inline-block;background:var(--sticky);padding:10px 16px;transform:rotate(-2.5deg);margin-top:30px;font-size:22px;box-shadow:3px 4px 0 rgba(22,18,15,.12)}
+
+  /* ticket / countdown */
+  .ticket{background:var(--night);color:var(--receipt);border-radius:14px;padding:28px 28px 24px;position:relative}
+  .ticket::before,.ticket::after{content:"";position:absolute;width:26px;height:26px;background:var(--receipt);border-radius:50%;top:58%}
+  .ticket::before{left:-13px}.ticket::after{right:-13px}
+  .ticket .label{color:rgba(241,235,223,.6)}
+  .lcd{font-family:"Space Mono",monospace;font-weight:700;color:var(--lcd);font-size:clamp(40px,5vw,58px);letter-spacing:.04em;margin:10px 0 4px;text-shadow:0 0 18px rgba(169,191,91,.35)}
+  .ticket .status{font-size:15px;color:rgba(241,235,223,.85)}
+  .ticket hr{border:0;border-top:2px dashed rgba(241,235,223,.25);margin:22px 0 16px}
+  .ticket .row{display:flex;justify-content:space-between}
+  .stamp{position:absolute;right:-18px;top:-30px;width:118px;height:118px;border:3px solid var(--red);border-radius:50%;color:var(--red);display:grid;place-items:center;text-align:center;transform:rotate(-14deg);background:rgba(241,235,223,.92)}
+  .stamp::before{content:"";position:absolute;inset:6px;border:1.5px solid var(--red);border-radius:50%}
+  .stamp b{font-family:"Anton",sans-serif;font-weight:400;font-size:19px;line-height:1;display:block}
+  .stamp span{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.08em}
+
+  /* marquee */
+  .marquee{background:var(--red);color:var(--receipt);overflow:hidden;white-space:nowrap;border-block:1.5px solid var(--night)}
+  .marquee .track{display:inline-block;padding:14px 0;animation:scroll 32s linear infinite;font-family:"Anton",sans-serif;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+  .marquee .track span{margin:0 22px}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* sections */
+  section.block{padding:88px 0;border-bottom:1.5px solid var(--night)}
+  .section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:44px;flex-wrap:wrap}
+  .section-head h2{font-size:clamp(44px,6vw,78px)}
+  .section-head p{max-width:38ch}
+
+  .shifts{display:grid;grid-template-columns:repeat(4,1fr);border:1.5px solid var(--night)}
+  .shift{padding:28px 22px 30px;border-right:1.5px solid var(--night);display:flex;flex-direction:column;gap:12px;min-height:280px;background:var(--receipt);transition:background .2s}
+  .shift:last-child{border-right:0}
+  .shift:hover{background:#fff8ea}
+  .shift .when{color:var(--red)}
+  .shift h3{font-size:34px}
+  .shift p{font-size:16px}
+
+  .how{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .step{border-top:1.5px solid var(--night);padding-top:20px}
+  .step .num{font-family:"Space Mono",monospace;font-weight:700;font-size:15px;color:var(--red)}
+  .step h3{font-size:38px;margin:10px 0 12px}
+
+  .tag{display:inline-flex;flex-direction:column;border:1.5px solid var(--night);border-radius:10px;overflow:hidden;margin-top:48px;transform:rotate(1.5deg);background:#fff}
+  .tag .top{background:var(--red);color:var(--receipt);padding:8px 18px;font-family:"Anton",sans-serif;text-transform:uppercase;font-size:22px;letter-spacing:.03em}
+  .tag .mid{padding:16px 22px 18px;font-size:30px}
+  .tag .bot{border-top:1.5px dashed var(--line);padding:8px 18px}
+
+  /* pilot */
+  .pilot{background:var(--night);color:var(--receipt);padding:96px 0;text-align:center}
+  .pilot h2{font-size:clamp(52px,8vw,112px)}
+  .pilot h2 .y{color:var(--sticky)}
+  .pilot p{max-width:46ch;margin:24px auto 0;font-size:19px;color:rgba(241,235,223,.85)}
+  .pilot .pill{display:inline-block;margin-top:34px;border:1.5px solid var(--lcd);color:var(--lcd);padding:10px 20px;border-radius:999px}
+
+  footer{padding:36px 0}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+
+  @media (max-width:900px){
+    .hero .grid{grid-template-columns:1fr}
+    .ticket{max-width:460px}
+    .shifts{grid-template-columns:1fr 1fr}
+    .shift:nth-child(2){border-right:0}
+    .shift:nth-child(-n+2){border-bottom:1.5px solid var(--night)}
+    .how{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    body{font-size:16px}
+    .hero{padding:48px 0 40px}
+    .shifts{grid-template-columns:1fr}
+    .shift{border-right:0;border-bottom:1.5px solid var(--night);min-height:0}
+    .shift:last-child{border-bottom:0}
+    .stamp{width:96px;height:96px;right:-8px;top:-34px}
+    .stamp b{font-size:16px}
+    section.block{padding:64px 0}
+  }
+  @media (prefers-reduced-motion:reduce){.marquee .track{animation:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="wordmark" href="#" aria-label="Clocked Out">Cl<span class="clock-o" aria-hidden="true"></span>cked&nbsp;Out</a>
+    <span class="mono">Jeddah · KSA</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow mono">Currently out of office</span>
+        <h1>Life happens<br><span class="red">off the clock.</span></h1>
+        <p class="lead">The after-hours club for Jeddah's 9-to-5ers. A new thing to try every week, new people every time, and it's normal to come alone.</p>
+        <div class="note marker">Your inbox will survive.</div>
+      </div>
+
+      <div class="ticket" aria-live="polite">
+        <div class="stamp" aria-hidden="true"><div><b>CLOCKED<br>OUT</b><span>17:00 · JED</span></div></div>
+        <div class="mono label">Jeddah time</div>
+        <div class="lcd" id="countdown">--:--:--</div>
+        <div class="status" id="status">until you clock out.</div>
+        <hr>
+        <div class="row mono label"><span>Shift: 09:00–17:00</span><span id="today">—</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <span>Log off. Show up.</span><span>✺</span><span>Come alone. Leave with a group chat.</span><span>✺</span><span>Nobody here asks what you do.</span><span>✺</span><span>Out of office. Into everything.</span><span>✺</span>
+      <span>Log off. Show up.</span><span>✺</span><span>Come alone. Leave with a group chat.</span><span>✺</span><span>Nobody here asks what you do.</span><span>✺</span><span>Out of office. Into everything.</span><span>✺</span>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Your new<br>schedule</h2>
+        <p>We change the activity and keep the people. No experience needed, no plans required. We already made them.</p>
+      </div>
+      <div class="shifts">
+        <article class="shift">
+          <span class="mono when">Weeknights</span>
+          <h3>After Hours</h3>
+          <p>A different thing to try every week, straight after work. Pottery, padel, card nights, things you've never done.</p>
+        </article>
+        <article class="shift">
+          <span class="mono when">Saturday mornings</span>
+          <h3>The Weekend Shift</h3>
+          <p>A walk or run along the Corniche, then coffee. The easiest way to start your week off the clock.</p>
+        </article>
+        <article class="shift">
+          <span class="mono when">Once a month</span>
+          <h3>The Overtime Table</h3>
+          <p>Twelve strangers, one long table, one very good dinner. Nobody leaves a stranger.</p>
+        </article>
+        <article class="shift">
+          <span class="mono when">Every quarter</span>
+          <h3>Annual Leave</h3>
+          <p>A day trip out of the city. Pack light, bring nobody, come back with a crew.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How a night<br>works</h2>
+        <p>Every event follows the same three beats, so showing up alone is the easiest thing you'll do all week.</p>
+      </div>
+      <div class="how">
+        <div class="step">
+          <span class="num">01 · 15 MIN</span>
+          <h3>The Clock-In</h3>
+          <p>Punch in, grab your name tag, meet three people. No job titles allowed.</p>
+        </div>
+        <div class="step">
+          <span class="num">02 · THE MAIN THING</span>
+          <h3>Show up</h3>
+          <p>Try the activity. Nobody's good at it, which is the whole point.</p>
+        </div>
+        <div class="step">
+          <span class="num">03 · THE BEST PART</span>
+          <h3>Stay late</h3>
+          <p>The hour after is the real event. Leave with one plan and one new number.</p>
+        </div>
+      </div>
+      <div class="tag" aria-hidden="true">
+        <div class="top">Hi, I'm</div>
+        <div class="mid marker">_______________</div>
+        <div class="bot mono">First shift</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pilot">
+    <div class="wrap">
+      <span class="mono" style="color:var(--lcd)">Now hiring: you</span>
+      <h2 style="margin-top:18px">First shift starts<br><span class="y">December 2026.</span></h2>
+      <p>Our first nights are coming to Jeddah this December. Every event earns a punch on your Time Card. Five punches and you're Fully Clocked Out.</p>
+      <span class="pill mono">Details drop soon</span>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mono">© 2026 Clocked Out · Jeddah</span>
+    <span class="marker" style="font-size:20px">Nobody here asks what you do.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var cd=document.getElementById('countdown'), st=document.getElementById('status'), td=document.getElementById('today');
+  function pad(n){return String(n).padStart(2,'0')}
+  function tick(){
+    var now=new Date(), jed=new Date(now.getTime()+(now.getTimezoneOffset()+180)*60000);
+    var day=jed.getDay(), mins=jed.getHours()*60+jed.getMinutes(), secs=mins*60+jed.getSeconds();
+    td.textContent=jed.toLocaleDateString('en-GB',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
+    var weekend=(day===5||day===6), start=9*3600, end=17*3600;
+    if(weekend){cd.textContent='OFF';st.textContent="It's the weekend. You're already clocked out.";return}
+    if(secs>=start&&secs<end){var left=end-secs;cd.textContent=pad(Math.floor(left/3600))+':'+pad(Math.floor(left%3600/60))+':'+pad(left%60);st.textContent='until you clock out.';}
+    else{cd.textContent=pad(jed.getHours())+':'+pad(jed.getMinutes())+':'+pad(jed.getSeconds());st.textContent="You're off the clock. Go do something.";}
+  }
+  tick();setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
